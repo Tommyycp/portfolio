@@ -25,18 +25,12 @@ alphabet = [
     'x',
     'y',
     'z']
-punctuation = [' ', ',', '.', '!', '?', ':']
-
-direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
-text = input("Type your message:\n").lower()
-shift = int(input("Type the shift number:\n"))
-
 
 def caesar(mode, string, number):
     final = ''
     if mode == "encode":
         for i, v in enumerate(string):
-            if v in punctuation:
+            if v not in alphabet:
                 final += v
             else:
                 index_alphabet = alphabet.index(v) + number
@@ -44,8 +38,8 @@ def caesar(mode, string, number):
                     index_alphabet = index_alphabet % len(alphabet)
                 final += alphabet[index_alphabet]
     elif mode == "decode":
-        for i, v in enumerate(string):
-            if v in punctuation:
+        for i, v in enumerate(string):                
+            if v not in alphabet:
                 final += v
             elif number > 26:
                 index_alphabet = alphabet.index(v) - number % len(alphabet)
@@ -56,5 +50,13 @@ def caesar(mode, string, number):
 
     print(f"The {mode}d text is {final}")
 
-
-caesar(mode=direction, string=text, number=shift)
+end = False
+while not end:
+    direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
+    text = input("Type your message:\n").lower()
+    shift = int(input("Type the shift number:\n"))
+    caesar(mode=direction, string=text, number=shift)
+    ask = input("Would you like to run again, yes or no?").lower()
+    if ask == 'no':
+        end = True
+        print ("Goodbye, hope you enjoy the program!\n")
