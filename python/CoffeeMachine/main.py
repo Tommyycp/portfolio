@@ -37,8 +37,7 @@ def is_insufficient(drink):
     for ingredient in required_ingredients:
         if res[ingredient] < required_ingredients[ingredient]:
             return True
-        else:
-            return False
+    return False
 
 
 def coins_insertion():
@@ -63,27 +62,21 @@ def transaction(selected_drink):
             change = payment - MENU[selected_drink]['cost']
             for i in (MENU[selected_drink]['ingredients']):
                 res[i] -= MENU[selected_drink]['ingredients'][i]
-            print(f"Here you go! {selected_drink}\nDon't forget your change: {change}")
+            print(f"Here you go! {selected_drink}")
+            if change > 0:
+                print(f"Don't forget your change: {change}")
 
 
-continue_prompt = True
-while continue_prompt:
+while True:
     user_prompt = input("What would you like? (espresso/latte/cappuccino)?").lower()
     if user_prompt == 'off':
         print("System closed")
         break
     else:
-        while user_prompt not in MENU and user_prompt != 'report':
+        print(user_prompt not in MENU)
+        print(user_prompt != 'report')
+        while user_prompt not in MENU or user_prompt != 'report':
             print(f"{user_prompt} not found in menu. Please order again.")
             user_prompt = input("What would you like? (espresso/latte/cappuccino)?").lower()
         else:
             transaction(user_prompt)
-        restart_prompt = input("Do you want to continue?").lower()
-        if restart_prompt == 'no' or restart_prompt == 'n':
-            continue_prompt = False
-
-# TODO 1: Prompt user by asking "What would you like? (espresso/latte/cappuccino):" (
-# TODO 2: Turn the coffee machine off by typing off (Done)
-# TODO 3: When the users types report: a report should be generated.
-# TODO 4: Check whether here is sufficient resource
-# TODO 5: Check transaction successful
