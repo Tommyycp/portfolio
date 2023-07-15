@@ -2,22 +2,19 @@ from turtle import Turtle
 import random as r
 
 
-class Food:
+class Food(Turtle):
+
     def __init__(self, screen_width, screen_height):
-        self.screen_width = screen_width
-        self.screen_height = screen_height
-        self.food = self.create_food()
+        self.width = screen_width
+        self.height = screen_height
+        super().__init__()
+        self.up()
+        self.shape('circle')
+        self.speed('fastest')
+        self.color('pink')
+        self.move_to_random()
 
-    def create_food(self):
-        food = Turtle(shape='circle')
-        food.color('pink')
-        x_cor = r.randint(-self.screen_width/2+30, self.screen_width/2-30)
-        y_cor = r.randint(-self.screen_height/2+30, self.screen_height/2-30)
-        food.penup()
-        food.goto(x=x_cor, y=y_cor)
-        return food
-
-    def random(self):
-        x_cor = r.randint(-self.screen_width/2+30, self.screen_width/2-30)
-        y_cor = r.randint(-self.screen_height/2+30, self.screen_height/2-30)
-        self.food.goto(x=x_cor, y=y_cor)
+    def move_to_random(self):
+        x_cor = r.randint(-self.width / 2 + 30, self.width / 2 - 30)
+        y_cor = r.randint(-self.height / 2 + 30, self.height / 2 - 30)
+        self.goto(x=x_cor, y=y_cor)

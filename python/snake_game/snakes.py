@@ -1,42 +1,43 @@
 from turtle import Turtle
+
 EAST = 0
 NORTH = 90
 WEST = 180
 SOUTH = 270
 
-class Snake:
+
+class Snake():
 
     def __init__(self, length, screen_width, screen_height):
-        self.snakes_dict = self.create_snakes(length)
-        self.snake_head = self.snakes_dict[0]
+        self.length = length
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.snake_head.color("cyan")
+        self.snakes = []
+        self.create_snakes()
+        self.snake_head = self.snakes[0]
 
-    def create_snakes(self, length):
-        turtles = {}
+    def create_snakes(self):
         starting_x = 0
-        for i in range(length):
-            tur = Turtle(shape='square')
-            tur.up()
-            tur.setx(starting_x)
-            tur.color('white')
-            turtles[i] = tur
+        for i in range(self.length):
+            snake = Turtle(shape='square')
+            snake.up()
+            snake.setx(starting_x)
+            snake.color('white')
             starting_x -= 20
-        return turtles
+            self.snakes.append(snake)
 
     def move(self):
         # Move the last elements up one point
-        for j in range(len(self.snakes_dict) - 1, 0, -1):
-            # Iterating the index backwords
+        for j in range(len(self.snakes) - 1, 0, -1):
+            # Iterating the index backwards
             # Len function returns the total number of elements. However, the index starts counting from 0.
             # Therefore, minus 1 whenever we anticiapte the index.
             # Because the dictionary key does not have -1.
             # Because if -1 is included, the top head will equals to the tail head
             # Therefore, we stop the range operation at 0
-            next_turtle_x = self.snakes_dict[j - 1].xcor()
-            next_turtle_y = self.snakes_dict[j - 1].ycor()
-            self.snakes_dict[j].goto(next_turtle_x, next_turtle_y)
+            next_turtle_x = self.snakes[j - 1].xcor()
+            next_turtle_y = self.snakes[j - 1].ycor()
+            self.snakes[j].goto(next_turtle_x, next_turtle_y)
             # Last coor == second to last coor
             # second to last coor == third to last x__coor
             # ....
@@ -45,22 +46,17 @@ class Snake:
         self.snake_head.fd(20)
 
     def add_snake(self):
-        new_tur = Turtle(shape="square")
-        new_tur.up()
-        new_tur.color('white')
-        self.snakes_dict[len(self.snakes_dict)] = new_tur
+        snake = Turtle()
+        snake.shape('square')
+        snake.up()
+        snake.color('white')
+        self.snakes.append(snake)
 
     def self_bite(self):
-        past_coor = []
-        for snake in range(1, len(self.snakes_dict)):
-            inst = self.snakes_dict[snake]
-            past_coor.append((inst.pos()))
-        for c in past_coor:
-            x = c[0]
-            y = c[1]
-            if x - 0.5 <= self.snake_head.xcor() <= x + 0.5:
-                if y - 0.5 <= self.snake_head.ycor() <= y + 0.5:
-                    return True
+        for snake in range(1, len(self.snakes)):
+            inst = self.snakes[snake]
+            if self.snake_head.distance(inst) < 1:
+                return True
         return False
 
     def is_snake_out_of_bounds(self):
@@ -69,11 +65,6 @@ class Snake:
         if -max_width <= self.snake_head.xcor() <= max_width and -max_height <= self.snake_head.ycor() <= max_height:
             return False
         return True
-
-    def is_snake_on_cake(self, x, y):
-        if x - 20 <= self.snake_head.xcor() <= x + 20 and y - 20 <= self.snake_head.ycor() <= y + 20:
-            return True
-        return False
 
     def east(self):
         if not self.snake_head.heading() == WEST:
