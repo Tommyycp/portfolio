@@ -6,7 +6,7 @@ WEST = 180
 SOUTH = 270
 
 
-class Snake():
+class Snake:
 
     def __init__(self, length, screen_width, screen_height):
         self.length = length
@@ -25,6 +25,7 @@ class Snake():
             snake.color('white')
             starting_x -= 20
             self.snakes.append(snake)
+
 
     def move(self):
         # Move the last elements up one point
@@ -53,9 +54,8 @@ class Snake():
         self.snakes.append(snake)
 
     def self_bite(self):
-        for snake in range(1, len(self.snakes)):
-            inst = self.snakes[snake]
-            if self.snake_head.distance(inst) < 1:
+        for snake in self.snakes[1:]:
+            if self.snake_head.distance(snake) < 1:
                 return True
         return False
 
