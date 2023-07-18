@@ -17,16 +17,15 @@ def create_paddle(x):
     return paddle
 
 
-def move_paddle(paddle_list, heading, limit):
-    for i in paddle_list:
-        if 0 < limit < i.ycor():
-            break
-        elif limit < 0 and i.ycor() < limit:
-            break
-        else:
-            i.seth(heading)
-            i.fd(40)
-
+# def move_paddle(paddle_list, heading, limit):
+#     for i in paddle_list:
+#         if 0 < limit < i.ycor():
+#             break
+#         elif limit < 0 and i.ycor() < limit:
+#             break
+#         else:
+#             i.seth(heading)
+#             i.fd(40)
 
 
 class Paddle:
@@ -34,8 +33,8 @@ class Paddle:
     def __init__(self, screen_width, screen_length):
         self.length = screen_length / 2 - 20
         self.width = screen_width / 2 - 20
-        self.left_paddle = create_paddle(-self.length)
-        self.right_paddle = create_paddle(self.length)
+        self.left_paddle = create_paddle(-self.width)
+        self.right_paddle = create_paddle(self.width)
 
     # def is_out_of_bound(self, paddle_list):
     #     for i in paddle_list:
@@ -48,28 +47,18 @@ class Paddle:
             i.seth(heading)
             i.fd(40)
 
-
-            # else:
-            #     i.seth(heading)
-            #     i.fd(40)
-            # if not -self.width < i.ycor() < self.width:
-            #     break
-
     def left_paddle_up(self):
         # if not self.is_out_of_bound(self.left_paddle):
-        self.move_paddle(self.left_paddle,90)
-
+        self.move_paddle(self.left_paddle, 90)
 
     def right_paddle_up(self):
         # if not self.is_out_of_bound(self.right_paddle):
-        self.move_paddle(self.right_paddle,90)
-
+        self.move_paddle(self.right_paddle, 90)
 
     def left_paddle_down(self):
         # if not self.is_out_of_bound(self.left_paddle):
-        self.move_paddle(self.left_paddle,270)
+        self.move_paddle(self.left_paddle, 270)
 
     def right_paddle_down(self):
         # if not self.is_out_of_bound(self.right_paddle):
-        self.move_paddle(self.right_paddle,270)
-
+        self.move_paddle(self.right_paddle, 270)

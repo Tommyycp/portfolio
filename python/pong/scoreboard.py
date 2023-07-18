@@ -12,7 +12,7 @@ def create_board(x, y):
 
 class Scoreboard:
 
-    def __init__(self, screen_height, screen_width):
+    def __init__(self, screen_width, screen_height):
         self.screen_height = screen_height / 2
         self.screen_width = screen_width / 2
         self.board_left = create_board(-self.screen_width / 2, self.screen_height - 60)
