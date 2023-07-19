@@ -32,7 +32,7 @@ screen.onkeypress(paddle.right_paddle_down, "Down")
 game_is_on = True
 while game_is_on:
     ball.move()
-    time.sleep(0.1)
+    time.sleep(0.01)
     if ball.xcor() > 500 or ball.xcor() < -500:
         game_is_on = False
     elif not -270 < ball.ycor() < 270:

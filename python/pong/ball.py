@@ -31,10 +31,13 @@ class Ball(Turtle):
     def bounce_wall(self):
         if 0 < self.heading() < 90:
             self.seth(360 - self.heading())
+            print(f"{self.pos()}, {self.heading()}")
         elif 180 < self.heading() < 270:
             self.seth(self.heading() - 45)
+            print(f"{self.pos()}, {self.heading()}")
         else:
             self.seth(self.heading() + 45)
+            print(f"{self.pos()}, {self.heading()}")
 
 
     def is_collide(self, paddle_list):
