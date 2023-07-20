@@ -26,7 +26,6 @@ while game_is_on:
     screen.listen()
     screen.onkeypress(player.move, 'w')
     if cars.is_crash(player):
-        print ("test")
         game_is_on = False
     elif player.ycor() >= 280:
         level += 1
