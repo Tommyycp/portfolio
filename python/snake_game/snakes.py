@@ -46,6 +46,7 @@ class Snake:
             # Notice how the first_coor is not 'moved up'.
         self.snake_head.fd(20)
 
+
     def add_snake(self):
         snake = Turtle()
         snake.shape('square')
@@ -65,6 +66,14 @@ class Snake:
         if -max_width <= self.snake_head.xcor() <= max_width and -max_height <= self.snake_head.ycor() <= max_height:
             return False
         return True
+
+    def reset(self):
+        for i in self.snakes:
+            i.goto(1000,1000)
+        self.snakes.clear()
+        self.create_snakes()
+        self.snake_head = self.snakes[0]
+        self.snake_head.goto(0,0)
 
     def east(self):
         if not self.snake_head.heading() == WEST:
