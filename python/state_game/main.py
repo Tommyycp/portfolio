@@ -33,9 +33,7 @@ while len(guessed) < total_count:
                 break
 
 complete_list = states_list.to_list()
+ungussed = [country for country in complete_list if country not in guessed]
 
-for i in guessed:
-    complete_list.remove(i)
-
-complete_list = pd.DataFrame(complete_list, columns=['State Name'])
+complete_list = pd.DataFrame(ungussed, columns=['State Name'])
 complete_list.to_csv('./not_guessed.csv')
