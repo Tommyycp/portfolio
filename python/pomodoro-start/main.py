@@ -1,6 +1,6 @@
 from tkinter import *
 from PIL import ImageTk, Image
-import time
+import os
 
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -8,9 +8,9 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 0.2
-SHORT_BREAK_MIN = 0.1
-LONG_BREAK_MIN = 0.05
+WORK_MIN = 25
+SHORT_BREAK_MIN = 5
+LONG_BREAK_MIN = 20
 REPS = 1
 check_marks = []
 RESET = 0
@@ -18,7 +18,12 @@ RESET = 0
 
 # ---------------------------- TIMER RESET ------------------------------- #
 
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
+# ---------------------------- TIMER MECHANISM ------------------------------- #
+
+def jump_front():
+    os.system('''/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "Python" to true' ''')
+
+
 def reset():
     global check_marks
     global REPS
@@ -26,11 +31,17 @@ def reset():
     check_marks = [mark.destroy() for mark in check_marks]
     check_marks.clear()
     REPS = 1
-    RESET += 1
+    RESET = 1
+
+def adding_marks():
+    global check_marks
+    new_mark = Label(root, text="√", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 15, "bold"))
+    new_mark.grid(column=1, row=3 + REPS // 2)
+    check_marks.append(new_mark)
+
 
 def count_down(total_second=WORK_MIN * 60):
     global REPS
-    global check_marks
     global RESET
     if RESET:
         RESET = 0
@@ -39,24 +50,25 @@ def count_down(total_second=WORK_MIN * 60):
         return True
     elif REPS == 1:
         title.config(text="Work!", fg=RED)
+
     if total_second < 0:
         REPS += 1
         if REPS > 8:
+            jump_front()
+            title.config(text="You've completed a cycle", fg=PINK)
             return True
         elif REPS == 8:
-            new_mark = Label(root, text="√", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 15, "bold"))
-            new_mark.grid(column=1, row=3+REPS//2)
-            check_marks.append(new_mark)
             count_down(LONG_BREAK_MIN * 60)
             title.config(text="Long break!!", fg=GREEN)
+            adding_marks()
+            jump_front()
         elif REPS % 2 == 0:
             count_down(SHORT_BREAK_MIN * 60)
             title.config(text="Short break!", fg=GREEN)
+            adding_marks()
+            jump_front()
         else:
             count_down(WORK_MIN * 60)
-            new_mark = Label(root, text="√", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 15, "bold"))
-            new_mark.grid(column=1, row=3+REPS//2)
-            check_marks.append(new_mark)
             title.config(text="Work!", fg=RED)
 
     if total_second >= 0:
@@ -88,9 +100,6 @@ start_button.grid(column=0, row=2)
 
 reset_button = Button(root, text="Reset", highlightbackground=YELLOW, command=reset)
 reset_button.grid(column=2, row=2)
-
-# check_mark = Label(root, text="√", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 15, "bold"))
-# check_mark.grid(column=1, row=3)
 
 timer = Label(text="00:00", font=(FONT_NAME, 38, 'bold'))
 timer.grid(column=1, row=1)
