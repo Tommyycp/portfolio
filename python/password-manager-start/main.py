@@ -26,7 +26,6 @@ def update_json(new_dict):
     with open(file="./password_content.json", mode="r") as new_file:
         data = json.load(new_file)
         data.update(new_dict)
-
     with open (file="./password_content.json", mode="w") as new_file:
         json.dump(data,new_file, indent=4)
 
@@ -35,7 +34,7 @@ def search_json():
     try:
         with open('./password_content.json', 'r') as file:
             data = json.load(file)
-        messagebox.showinfo(title="Record Found", message=f"Please check below:\n {data[string]}")
+        messagebox.showinfo(title="Record Found", message=f"Please check below:\n Username: {data[string]['username']}\nPassword: {data[string]['password']}")
     except KeyError as key:
         messagebox.showerror(title="Error", message=f"{key} not found in the database")
 
