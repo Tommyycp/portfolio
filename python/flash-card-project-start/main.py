@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from PIL import ImageTk, Image
 from tkmacosx import Button as NewButton
 import pandas as pd
@@ -10,11 +11,15 @@ SCORE = 0
 CURRENT_WORD = None
 GUESSED_WORD = []
 
-# Operation
-df = pd.read_csv("./data/french_words.csv")
-data_dict = {r.French: r.English for i, r in df.iterrows()}
-french = list(data_dict.keys())
 
+# Operation
+try:
+    df = pd.read_csv("./data/missed_words.csv")
+except FileNotFoundError:
+    df = pd.read_csv("./data/french_words.csv")
+finally:
+    data_dict = {r.French: r.English for i, r in df.iterrows()}
+    french = list(data_dict.keys())
 
 def flip_front():
     global CURRENT_WORD
@@ -36,13 +41,22 @@ def tick():
     else:
         GUESSED_WORD.append(CURRENT_WORD)
         SCORE += 1
-    print(SCORE)
-    print(GUESSED_WORD)
 
 
 def wrong():
-    pass
-
+    global CURRENT_WORD
+    GUESSED_WORD.append(CURRENT_WORD)
+    field = {"French": [CURRENT_WORD], "English": [data_dict[CURRENT_WORD]]}
+    try:
+        missed_words = pd.read_csv("./data/missed_words.csv")
+        french_list = list(missed_words["French"])
+    except FileNotFoundError:
+        new_df = pd.DataFrame(field)
+        new_df.to_csv(path_or_buf="./data/missed_words.csv", mode="w",index=False)
+    else:
+        if CURRENT_WORD not in french_list:
+            append_df = pd.DataFrame(field)
+            append_df.to_csv(path_or_buf="./data/missed_words.csv", mode="a", header=False, index=False)
 
 def flip_back():
     global CURRENT_WORD
@@ -53,11 +67,15 @@ def flip_back():
 
 
 def main_game(number=1):
-    if number > 0:
-        flip_back()
-    elif number < 0:
-        flip_front()
-    root.after(5000, main_game, number * -1)
+    if len(GUESSED_WORD) == len(french):
+        messagebox.showinfo(title="Game Over", message=f"You've exhausted  the list. Your score is {SCORE}.")
+        return True
+    else:
+        if number > 0:
+            flip_back()
+        elif number < 0:
+            flip_front()
+        root.after(3000, main_game, number * -1)
 
 
 # GUI
