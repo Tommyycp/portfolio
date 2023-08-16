@@ -6,7 +6,7 @@ import time
 
 def send_email(recipient_address, subject, content):
     USERNAME = "tommyycp.rommates@gmail.com"
-    PASSWORD = "nuaojbfudcahvesy"
+    PASSWORD = ""
     with smtplib.SMTP(host="smtp.gmail.com", port=587) as email_server:
         email_server.starttls()
         email_server.login(user=USERNAME, password=PASSWORD)
